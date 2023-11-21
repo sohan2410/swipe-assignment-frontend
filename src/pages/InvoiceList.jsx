@@ -43,6 +43,10 @@ const InvoiceList = () => {
                   <Button variant="primary mb-2 mb-md-4">Create Invoice</Button>
                 </Link>
 
+                <Link to="/bulk-edit">
+                  <Button variant="warning mb-2 mb-md-4">Bulk Edit</Button>
+                </Link>
+
                 <div className="d-flex gap-2">
                   <Button variant="dark mb-2 mb-md-4" onClick={handleCopyClick}>
                     Copy Invoice
@@ -72,11 +76,7 @@ const InvoiceList = () => {
                 </thead>
                 <tbody>
                   {invoiceList.map((invoice) => (
-                    <InvoiceRow
-                      key={invoice.id}
-                      invoice={invoice}
-                      navigate={navigate}
-                    />
+                    <InvoiceRow key={invoice.id} invoice={invoice} navigate={navigate} />
                   ))}
                 </tbody>
               </Table>

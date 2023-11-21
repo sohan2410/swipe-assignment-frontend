@@ -37,7 +37,7 @@ const InvoiceForm = () => {
         }
       : {
           id: generateRandomId(),
-          currentDate: new Date().toLocaleDateString(),
+          currentDate: new Date().toISOString().slice(0, 10),
           invoiceNumber: listSize + 1,
           dateOfIssue: "",
           billTo: "",
@@ -71,9 +71,7 @@ const InvoiceForm = () => {
   }, []);
 
   const handleRowDel = (itemToDelete) => {
-    const updatedItems = formData.items.filter(
-      (item) => item.itemId !== itemToDelete.itemId
-    );
+    const updatedItems = formData.items.filter((item) => item.itemId !== itemToDelete.itemId);
     setFormData({ ...formData, items: updatedItems });
     handleCalculateTotal();
   };
@@ -99,21 +97,12 @@ const InvoiceForm = () => {
       let subTotal = 0;
 
       prevFormData.items.forEach((item) => {
-        subTotal +=
-          parseFloat(item.itemPrice).toFixed(2) * parseInt(item.itemQuantity);
+        subTotal += parseFloat(item.itemPrice).toFixed(2) * parseInt(item.itemQuantity);
       });
 
-      const taxAmount = parseFloat(
-        subTotal * (prevFormData.taxRate / 100)
-      ).toFixed(2);
-      const discountAmount = parseFloat(
-        subTotal * (prevFormData.discountRate / 100)
-      ).toFixed(2);
-      const total = (
-        subTotal -
-        parseFloat(discountAmount) +
-        parseFloat(taxAmount)
-      ).toFixed(2);
+      const taxAmount = parseFloat(subTotal * (prevFormData.taxRate / 100)).toFixed(2);
+      const discountAmount = parseFloat(subTotal * (prevFormData.discountRate / 100)).toFixed(2);
+      const total = (subTotal - parseFloat(discountAmount) + parseFloat(taxAmount)).toFixed(2);
 
       return {
         ...prevFormData,
@@ -207,14 +196,7 @@ const InvoiceForm = () => {
                 </div>
                 <div className="d-flex flex-row align-items-center">
                   <span className="fw-bold d-block me-2">Due&nbsp;Date:</span>
-                  <Form.Control
-                    type="date"
-                    value={formData.dateOfIssue}
-                    name="dateOfIssue"
-                    onChange={(e) => editField(e.target.name, e.target.value)}
-                    style={{ maxWidth: "150px" }}
-                    required
-                  />
+                  <Form.Control type="date" value={formData.dateOfIssue} name="dateOfIssue" onChange={(e) => editField(e.target.name, e.target.value)} style={{ maxWidth: "150px" }} required />
                 </div>
               </div>
               <div className="d-flex flex-row align-items-center">
@@ -301,13 +283,7 @@ const InvoiceForm = () => {
                 />
               </Col>
             </Row>
-            <InvoiceItem
-              onItemizedItemEdit={onItemizedItemEdit}
-              onRowAdd={handleAddEvent}
-              onRowDel={handleRowDel}
-              currency={formData.currency}
-              items={formData.items}
-            />
+            <InvoiceItem onItemizedItemEdit={onItemizedItemEdit} onRowAdd={handleAddEvent} onRowDel={handleRowDel} currency={formData.currency} items={formData.items} />
             <Row className="mt-4 justify-content-end">
               <Col lg={6}>
                 <div className="d-flex flex-row align-items-start justify-content-between">
@@ -320,9 +296,7 @@ const InvoiceForm = () => {
                 <div className="d-flex flex-row align-items-start justify-content-between mt-2">
                   <span className="fw-bold">Discount:</span>
                   <span>
-                    <span className="small">
-                      ({formData.discountRate || 0}%)
-                    </span>
+                    <span className="small">({formData.discountRate || 0}%)</span>
                     {formData.currency}
                     {formData.discountAmount || 0}
                   </span>
@@ -336,10 +310,7 @@ const InvoiceForm = () => {
                   </span>
                 </div>
                 <hr />
-                <div
-                  className="d-flex flex-row align-items-start justify-content-between"
-                  style={{ fontSize: "1.125rem" }}
-                >
+                <div className="d-flex flex-row align-items-start justify-content-between" style={{ fontSize: "1.125rem" }}>
                   <span className="fw-bold">Total:</span>
                   <span className="fw-bold">
                     {formData.currency}
@@ -363,11 +334,7 @@ const InvoiceForm = () => {
         </Col>
         <Col md={4} lg={3}>
           <div className="sticky-top pt-md-3 pt-xl-4">
-            <Button
-              variant="dark"
-              onClick={handleAddInvoice}
-              className="d-block w-100 mb-2"
-            >
+            <Button variant="dark" onClick={handleAddInvoice} className="d-block w-100 mb-2">
               {isEdit ? "Update Invoice" : "Add Invoice"}
             </Button>
             <Button variant="primary" type="submit" className="d-block w-100">
@@ -406,13 +373,7 @@ const InvoiceForm = () => {
             />
             <Form.Group className="mb-3">
               <Form.Label className="fw-bold">Currency:</Form.Label>
-              <Form.Select
-                onChange={(event) =>
-                  onCurrencyChange({ currency: event.target.value })
-                }
-                className="btn btn-light my-1"
-                aria-label="Change Currency"
-              >
+              <Form.Select onChange={(event) => onCurrencyChange({ currency: event.target.value })} className="btn btn-light my-1" aria-label="Change Currency">
                 <option value="$">USD (United States Dollar)</option>
                 <option value="£">GBP (British Pound Sterling)</option>
                 <option value="¥">JPY (Japanese Yen)</option>
@@ -437,9 +398,7 @@ const InvoiceForm = () => {
                   step="0.01"
                   max="100.00"
                 />
-                <InputGroup.Text className="bg-light fw-bold text-secondary small">
-                  %
-                </InputGroup.Text>
+                <InputGroup.Text className="bg-light fw-bold text-secondary small">%</InputGroup.Text>
               </InputGroup>
             </Form.Group>
             <Form.Group className="my-3">
@@ -456,25 +415,12 @@ const InvoiceForm = () => {
                   step="0.01"
                   max="100.00"
                 />
-                <InputGroup.Text className="bg-light fw-bold text-secondary small">
-                  %
-                </InputGroup.Text>
+                <InputGroup.Text className="bg-light fw-bold text-secondary small">%</InputGroup.Text>
               </InputGroup>
             </Form.Group>
 
-            <Form.Control
-              placeholder="Enter Invoice ID"
-              name="copyId"
-              value={copyId}
-              onChange={(e) => setCopyId(e.target.value)}
-              type="text"
-              className="my-2 bg-white border"
-            />
-            <Button
-              variant="primary"
-              onClick={handleCopyInvoice}
-              className="d-block"
-            >
+            <Form.Control placeholder="Enter Invoice ID" name="copyId" value={copyId} onChange={(e) => setCopyId(e.target.value)} type="text" className="my-2 bg-white border" />
+            <Button variant="primary" onClick={handleCopyInvoice} className="d-block">
               Copy Old Invoice
             </Button>
           </div>
