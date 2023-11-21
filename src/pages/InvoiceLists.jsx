@@ -124,8 +124,8 @@ export default function InvoiceLists() {
     setInvoiceList((prevInvoiceList) => prevInvoiceList.filter((invoice) => invoice.id != id));
   };
   return (
-    <>
-      <div className="d-flex align-items-center">
+    <div className="invoiceLists">
+      <div className="d-flex align-items-center ">
         <BiArrowBack size={18} />
         <div className="fw-bold mt-1 mx-2 cursor-pointer">
           <Link to="/">
@@ -133,7 +133,7 @@ export default function InvoiceLists() {
           </Link>
         </div>
       </div>
-      <Row>
+      <Row style={{ overflowX: "scroll" }}>
         <Col className="mx-auto" xs={12} md={8} lg={12}>
           <Card className="d-flex p-3 p-md-4 my-3 my-md-4 " style={{ minWidth: "100vw", width: "100%" }}>
             <div className="d-flex flex-column">
@@ -413,6 +413,6 @@ export default function InvoiceLists() {
           </Card>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
