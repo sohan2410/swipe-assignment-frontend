@@ -121,7 +121,7 @@ export default function InvoiceLists() {
     navigate("/");
   };
   const handleDeleteInvoice = (id) => {
-    setInvoiceList((prevInvoiceList) => prevInvoiceList.filter((invoice) => invoice.id != id));
+    setInvoiceList((prevInvoiceList) => prevInvoiceList.filter((invoice) => invoice.id !== id));
   };
   return (
     <div className="invoiceLists">
